@@ -16,7 +16,8 @@ const CreateRule = () => {
 
   <div className="w-full p-1">
     <textarea
-      placeholder="Enter rule string"
+        placeholder={`Enter Rule string : ((age > 30 AND department = 'Sales') OR (age < 25 AND department = 'Marketing')) AND (salary > 50000 OR experience > 5)`}
+
       className="w-full p-2 h-28 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 transition duration-300 ease-in-out hover:bg-zinc-600 resize-none"
     />
   </div>

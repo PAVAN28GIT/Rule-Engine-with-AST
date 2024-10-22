@@ -6,7 +6,7 @@ const EvaluateRules = () => {
       <h1 className="text-white text-xl font-bold">Evaluate Rule</h1>
       <div className="w-full p-1">
         <textarea
-          placeholder="Json data"
+          placeholder={`Enter JSON data example : {"age": 35, "department": "Sales", "salary": 60000, "experience": 3}`}
           className="w-full p-2 h-20 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 transition duration-300 ease-in-out hover:bg-zinc-600 resize-none"
         />
       </div>

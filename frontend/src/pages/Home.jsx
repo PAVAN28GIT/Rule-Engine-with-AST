@@ -14,7 +14,7 @@ const Home = () => {
         <UpdateRule />
       </div>
 
-      <div className="w-2/6 h-full fixed m-5 right-2 top-2">
+      <div className="w-2/6 h-full fixed m-5 right-2 top-5">
         <Rules />
         <EvaluateRules />
       </div>

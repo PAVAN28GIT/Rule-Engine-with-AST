@@ -2,7 +2,7 @@ import React from 'react'
 
 export const UpdateRule = () => {
   return (
-    <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 mt-5 h-80 rounded-xl px-4 flex flex-col justify-evenly shadow-lg border-2 border-sky-500">
+    <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 mt-5 h-80 rounded-xl px-4 flex flex-col justify-evenly shadow-lg border-2 border-sky-900">
     {/* Heading */}
     <h1 className="text-white text-xl font-bold">Update Rule</h1>
   
