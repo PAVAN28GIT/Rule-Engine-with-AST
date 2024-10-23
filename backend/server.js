@@ -30,6 +30,6 @@ app.get('/api/rules' , ruleRoutes);
 
 
 app.listen(port, () => {
-    console.log(`The Daily Scoop listening on port ${port}`)
+    console.log(`The Rule Engine listening on port ${port}`)
 })
   

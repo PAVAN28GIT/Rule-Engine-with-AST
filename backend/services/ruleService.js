@@ -1,5 +1,22 @@
 // Core business logic (AST parsing and evaluation)
 
+// Main function to validate and parse
+function processRule(ruleString) {
+
+  const syntaxCheck = checkSyntax(ruleString);
+  if (!syntaxCheck.valid) {
+    return { error: syntaxCheck.error };
+  }
+
+  return parseRule(ruleString);
+}
+
+
+
+
+
+
+
 // function that converts a rule string into an AST
 function parseRule(ruleString) {
   // Base case
@@ -40,6 +57,34 @@ function parseRule(ruleString) {
       left: parseRule(left),
       right: parseRule(right),
     };
+  }
+
+  return null; // For cases where there's no valid parsing
+}
+
+function checkSyntax(ruleString) {
+  try {
+    // Check if the rule string is empty
+    if (!ruleString || typeof ruleString !== 'string') {
+      throw new Error('Invalid rule string: Rule cannot be empty and must be a string');
+    }
+    
+    // Check for mismatched parentheses
+    const openBrackets = (ruleString.match(/\(/g) || []).length;
+    const closeBrackets = (ruleString.match(/\)/g) || []).length;
+    
+    if (openBrackets !== closeBrackets) {
+      throw new Error('Syntax Error: Mismatched parentheses');
+    }
+    
+    // Check for missing logical operators (AND/OR)
+    if (!/AND|OR/.test(ruleString) && !ruleString.includes(">") && !ruleString.includes("=")) {
+      throw new Error('Syntax Error: Rule must contain logical operators (AND/OR) or comparison operators.');
+    }
+
+    return { valid: true };  // If everything is valid
+  } catch (error) {
+    return { valid: false, error: error.message };
   }
 }
 

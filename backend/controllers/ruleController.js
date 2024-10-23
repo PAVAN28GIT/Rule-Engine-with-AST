@@ -1,8 +1,7 @@
 // handling API logic
 
 const Rule = require('../models/Rule');
-import { parseRule , evaluateAST } from '../services/ruleService';
-
+const { parseRule, evaluateAST } = require('../services/ruleService');
 
 // Create a new rule (API to accept rule string and generate AST)
 const createRule = async (req, res) => {
