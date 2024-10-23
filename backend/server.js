@@ -21,12 +21,12 @@ const port = process.env.PORT
 
 
 // ROUTES
-const astRoutes = require('./routes/astRoutes.js');
+const ruleRoutes = require('./routes/ruleRoutes.js');
 app.get('/', (req, res) => {
     res.send('The Rule Engine backend')
 })
 
-app.get('/api/ast' , astRoutes);
+app.get('/api/rules' , ruleRoutes);
 
 
 app.listen(port, () => {
