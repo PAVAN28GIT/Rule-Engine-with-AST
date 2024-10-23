@@ -9,6 +9,4 @@ router.post('/create', createRule);
 // Route to evaluate rule with user data
 router.post('/evaluate', evaluateRule);
 
-
 module.exports = router;
-

@@ -11,12 +11,6 @@ function processRule(ruleString) {
   return parseRule(ruleString);
 }
 
-
-
-
-
-
-
 // function that converts a rule string into an AST
 function parseRule(ruleString) {
   // Base case
@@ -111,4 +105,4 @@ function evaluateAST(ast, userData) {
   }
 }
 
-module.exports = { parseRule, evaluateAST };
+module.exports = { processRule, evaluateAST };

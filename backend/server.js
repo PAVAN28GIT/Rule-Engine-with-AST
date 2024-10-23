@@ -1,35 +1,36 @@
 const express = require('express');
 const dotenv = require('dotenv');
-var cors = require('cors')
+const cors = require('cors');
 
-//express app
-const app = express()
+// Load environment variables from config.env
+dotenv.config({ path: './config.env' });
 
-// middlewares
-app.use(cors()) //  If CORS is not configured on the backend, browsers will block cross-origin requests. This means that your frontend application will not be able to communicate with your API,
-app.use(express.json())
-app.use(express.urlencoded({extended : true}));
-
-
-// connect to db
+// Import and connect to MongoDB
 const connectToMongo = require('./db');
 connectToMongo();
 
-// env variables
-dotenv.config({path: './config.env'})
-const port = process.env.PORT
 
+const app = express();
 
-// ROUTES
+// Middlewares
+app.use(cors()); // Enable CORS for cross-origin requests
+app.use(express.json()); // Parse incoming JSON requests
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
+
 const ruleRoutes = require('./routes/ruleRoutes.js');
+
+// Home route
 app.get('/', (req, res) => {
-    res.send('The Rule Engine backend')
-})
+  res.send('The Rule Engine backend');
+});
 
-app.get('/api/rules' , ruleRoutes);
+// rule routes for the API
+app.use('/api/rules', ruleRoutes);
 
+// Define the PORT
+const PORT = process.env.PORT || 8000;
 
-app.listen(port, () => {
-    console.log(`The Rule Engine listening on port ${port}`)
-})
-  
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
