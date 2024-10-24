@@ -1,17 +1,5 @@
 // Core business logic (AST parsing and evaluation)
 
-// Main function to validate and parse
-function processRule(ruleString) {
-
-  const syntaxCheck = checkSyntax(ruleString);
-  if (!syntaxCheck.valid) {
-    return { error: syntaxCheck.error };
-  }
-
-  return parseRule(ruleString);
-}
-
-// function that converts a rule string into an AST
 function parseRule(ruleString) {
   // Base case
   if (ruleString.includes(">")) {
@@ -77,12 +65,13 @@ function checkSyntax(ruleString) {
     }
 
     return { valid: true };  // If everything is valid
+  
   } catch (error) {
     return { valid: false, error: error.message };
   }
 }
 
-// Evaluate the AST against user input
+// Evaluate AST against user input
 function evaluateAST(ast, userData) {
   if (ast.type === "operand") {
     const field = userData[ast.field];
@@ -105,4 +94,4 @@ function evaluateAST(ast, userData) {
   }
 }
 
-module.exports = { processRule, evaluateAST };
+module.exports = { checkSyntax, parseRule, evaluateAST};

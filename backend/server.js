@@ -9,7 +9,6 @@ dotenv.config({ path: './config.env' });
 const connectToMongo = require('./db');
 connectToMongo();
 
-
 const app = express();
 
 // Middlewares

@@ -1,27 +1,38 @@
-// handling API logic
 const Rule = require("../models/Rule");
-const { processRule, evaluateAST } = require("../services/ruleService");
+const { checkSyntax, parseRule , evaluateAST } = require("../services/ruleService");
 
 
 // API logic  to accept rule string and generate AST
-const createRule = async (req, res) => {
+const createRules = async (req, res) => {
   try {
-    console.log("recieved in backend");
-    console.log(req.body);
+    console.log("Received in backend", req.body);
 
     const { ruleName, ruleString } = req.body;
-    const ast = processRule(ruleString); 
 
+    const syntaxCheck = checkSyntax(ruleString);
+    if (!syntaxCheck.valid) {
+      console.log("Syntax error detected:", syntaxCheck.error);
+      return res.status(400).json({ error: syntaxCheck.error });
+    }
+    const ast = parseRule(ruleString); 
+    if (ast === null) {
+      return res.status(400).json({ error: "AST was not created. Check your syntax." });
+    }
+
+    console.log("Saving rule to the database");
     const newRule = new Rule({ ruleName, ruleString, ast });
     await newRule.save();
-    console.log("saved to database");
-    console.log(ast);
-
+    
+    console.log("Rule saved to database", ast);
     res.status(201).json(newRule);
+
   } catch (error) {
-    res.status(500).json({ message: "Error creating rule", error: error.message });
+    // Send generic error response
+    console.error("Error creating rule:", error.message);
+    return res.status(500).json({ error: "Server error: " + error.message });
   }
 };
+
 
 // API logic to evaluate the AST with user input
 const evaluateRule = async (req, res) => {
@@ -43,15 +54,11 @@ const getRule = async(req, res)=>{
   try{
 
     const rules = await Rule.find();
-    if (rules.length === 0) {
-      return res.status(404).json({ message: "No rules are created" });
-    }
     res.status(200).json(rules);
-
   }catch(error){
     res.status(500).json({ message: "Error retrieving rules", error });
   }
 }
 
 
-module.exports = { createRule, evaluateRule };
+module.exports = { createRules, evaluateRule, getRule};

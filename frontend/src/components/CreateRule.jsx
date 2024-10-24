@@ -1,15 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
+import { showToast } from "../utils/toast";
+import { API_URL } from "../../constants/constants.js";
 
 
-//import { API_URL } from "../../constants/constants.js";
-
-const API_URL = "http://localhost:8000"
-
-const CreateRule = () => {
- 
-
+const CreateRule = ({ fetchRules }) => {
   const [ruleName, setRuleName] = useState("");
   const [ruleString, setRuleString] = useState("");
 
@@ -17,38 +13,39 @@ const CreateRule = () => {
     e.preventDefault();
   
     if (!ruleName || !ruleString) {
-      alert("Please fill in both fields.");
+      showToast("Please fill in both fields.", "error");
       return;
     }
-  
     try {
-      console.log("sending to backend");
-      const startTime = performance.now();
-      
-      // Send the data to the backend using Axios
-      const response = await axios.post(`${API_URL}/api/rules/create`, {
+      // Show loading notification
+      showToast("Creating the rule", "loading");
+      let resp = await axios.post(`${API_URL}/api/rules/create`, {
         ruleName,
         ruleString,
       });
   
-      const endTime = performance.now();
-      console.log(`Request took ${endTime - startTime} ms`);
-  
-      alert("Rule created successfully");
-      console.log("Response:", response.data);
-  
+      // On success
+      console.log(resp);
+      showToast("", "dismiss");
+      showToast("Created Rule", "success");
+      
+      fetchRules();
       setRuleName("");
       setRuleString("");
+  
     } catch (error) {
-      console.error("Error creating rule:", error);
-      alert("Failed to create rule");
+      showToast("", "dismiss");
+      let errorMessage = error.response?.data?.error || error.message;
+      showToast(errorMessage, "error"); 
+      console.log("Error creating rule:", errorMessage);
     }
   };
   
-
-  
   return (
-    <form onSubmit={handleSubmit} className="bg-gradient-to-b from-zinc-800 to-zinc-900 mt-5 h-80 rounded-xl px-4 flex flex-col justify-evenly shadow-lg border-2 border-sky-800">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-gradient-to-b from-zinc-800 to-zinc-900 mt-5 h-80 rounded-xl px-4 flex flex-col justify-evenly shadow-lg border-2 border-sky-800"
+    >
       <h1 className="text-white text-xl font-bold">Create Rule</h1>
 
       <div className="w-full p-1">
@@ -71,12 +68,15 @@ const CreateRule = () => {
       </div>
 
       <div className="flex justify-end">
-        <button type="submit" className="w-1/3 p-2 text-xl font-bold rounded-lg bg-gradient-to-r from-sky-500 to-purple-900 text-white hover:from-blue-400 hover:to-purple-500 transition duration-300 ease-in-out">
+        <button
+          type="submit"
+          className="w-1/3 p-2 text-xl font-bold rounded-lg bg-gradient-to-r from-sky-500 to-purple-900 text-white hover:from-blue-400 hover:to-purple-500 transition duration-300 ease-in-out"
+        >
           Create Rule
         </button>
       </div>
     </form>
   );
-}
+};
 
 export default CreateRule;
