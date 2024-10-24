@@ -12,7 +12,7 @@ const CombineRule = ({ rules, fetchRules }) => {
 
   const handleRuleName = (e) => {
     setSelectedRuleName(e.target.value);
-    console.log(e.target.value); // Log the current value for debugging
+   
   };
 
   const handleSubmit = async (e) => {

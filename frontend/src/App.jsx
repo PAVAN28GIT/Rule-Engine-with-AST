@@ -1,18 +1,17 @@
-import { useState } from 'react'
-import Home from './pages/Home'
-import { Toaster } from 'react-hot-toast'
-
-
+import { useState } from "react";
+import Home from "./pages/Home";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <div>
-      <Toaster/>
+      <Toaster />
       <Home />
+      
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

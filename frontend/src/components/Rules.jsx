@@ -7,6 +7,15 @@ const Rules = ({rules,fetchRules}) => {
     fetchRules();
   }, []);
 
+  const showRuleDialog = (ruleName, ruleString) => {
+    const modal = document.getElementById('my_modal_1');
+    // Set the content in the modal
+    document.getElementById('modal_rule_name').innerText = ruleName;
+    document.getElementById('modal_rule_string').innerText = ruleString;
+    modal.showModal();
+  };
+  
+
 
   return (
     <div className="bg-zinc-800 h-3/5 px-4 rounded-lg shadow-lg text-white overflow-auto border-2 border-sky-900 ">
@@ -19,6 +28,7 @@ const Rules = ({rules,fetchRules}) => {
           rules.map((rule, index) => (
             
             <button
+              onClick={() => showRuleDialog(rule.ruleName, rule.ruleString)}
               key={index}
               className="p-2 px-5 bg-zinc-700 rounded-xl mx-2 hover:bg-slate-600"
             >
