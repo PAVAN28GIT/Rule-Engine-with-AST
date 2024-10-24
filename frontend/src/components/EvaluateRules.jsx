@@ -96,3 +96,5 @@ const EvaluateRules = ({ rules }) => {
 };
 
 export default EvaluateRules;
+
+

@@ -112,3 +112,4 @@ export const UpdateRule = ({rules,fetchRules}) => {
   
   )
 }
+

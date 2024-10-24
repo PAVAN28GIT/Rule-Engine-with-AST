@@ -77,4 +77,8 @@ const CreateRule = ({ fetchRules }) => {
   );
 };
 
+
+
 export default CreateRule;
+
+

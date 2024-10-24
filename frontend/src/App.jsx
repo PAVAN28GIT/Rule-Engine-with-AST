@@ -9,7 +9,6 @@ function App() {
     <div>
       <Toaster />
       <Home />
-      
     </div>
   );
 }

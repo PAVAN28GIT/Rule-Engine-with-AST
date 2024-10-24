@@ -111,5 +111,6 @@ const CombineRule = ({ rules, fetchRules }) => {
     </form>
   );
 };
-
 export default CombineRule;
+
+
