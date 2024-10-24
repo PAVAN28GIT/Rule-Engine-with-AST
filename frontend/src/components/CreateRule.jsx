@@ -27,7 +27,7 @@ const CreateRule = ({ fetchRules }) => {
       // On success
       console.log(resp);
       showToast("", "dismiss");
-      showToast("Created Rule", "success");
+      showToast("Saved Rule to database", "success");
       
       fetchRules();
       setRuleName("");

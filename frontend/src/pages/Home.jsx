@@ -14,8 +14,7 @@ const Home = () => {
   const fetchRules = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/rules/view`);
-      console.log("printing respoonse.data");
-      console.log(response.data);
+    
       setRules(response.data); // Set the fetched rules in state
     } catch (err) {
       showToast(err.message,'error')

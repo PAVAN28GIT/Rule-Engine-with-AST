@@ -40,7 +40,7 @@ const evaluateRule = async (req, res) => {
     const { ruleName, userData } = req.body;
     const rule = await Rule.findOne({ ruleName });
 
-    if (!rule) return res.status(404).json({ message: "Rule not found" });
+    if (!rule) return res.status(400).json({ message: "Rule not found" });
 
     const result = evaluateAST(rule.ast, userData);
     res.status(200).json({ match: result });
