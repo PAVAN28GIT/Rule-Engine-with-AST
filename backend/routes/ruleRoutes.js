@@ -1,5 +1,5 @@
 const express = require('express');
-const { createRules, evaluateRule ,getRule, getOneRule} = require('../controllers/ruleController');
+const { createRules, evaluateRule ,getRule, getOneRule, updaterule} = require('../controllers/ruleController');
 
 const router = express.Router();
 
@@ -12,5 +12,7 @@ router.post('/evaluate', evaluateRule);
 router.get('/view' , getRule);
 
 router.get("/getone" , getOneRule);
+
+router.put('/update' , updaterule)
 
 module.exports = router;

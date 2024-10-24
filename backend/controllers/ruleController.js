@@ -60,17 +60,6 @@ const getRule = async(req, res)=>{
   }
 }
 
-// const getOneRule = async(req, res)=>{
-//   try{
-//     let {ruleName} = req.body;
-//     const rules = await Rule.findOne({ruleName});
-
-//     if (!rules) return res.status(400).json({ message: "Rule not found" });
-//     res.status(200).json(rules);
-//   }catch(error){
-//     res.status(500).json({ message: "Error retrieving rules", error });
-//   }
-// }
 
 const getOneRule = async (req, res) => {
   try {
@@ -84,5 +73,42 @@ const getOneRule = async (req, res) => {
   }
 };
 
+const updaterule = async (req, res) => {
+  try {
+    const { ruleName, ruleString } = req.body;
 
-module.exports = { createRules, evaluateRule, getRule, getOneRule};
+    // Find the existing rule by ruleName
+    const existingRule = await Rule.findOne({ ruleName });
+    if (!existingRule) {
+      return res.status(404).json({ error: "Rule not found." });
+    }
+
+    // Check syntax of the new rule string
+    const syntaxCheck = checkSyntax(ruleString);
+    if (!syntaxCheck.valid) {
+      console.log("Syntax error detected:", syntaxCheck.error);
+      return res.status(400).json({ error: syntaxCheck.error });
+    }
+
+    // Parse the new rule string into AST
+    const ast = parseRule(ruleString);
+    if (ast === null) {
+      return res.status(400).json({ error: "AST was not created. Check your syntax." });
+    }
+
+    // Update the rule in the database
+    existingRule.ruleString = ruleString;
+    existingRule.ast = ast;
+    await existingRule.save();
+
+    console.log("Rule updated in database", existingRule);
+    res.status(200).json(existingRule);
+
+  } catch (error) {
+    console.error("Error updating rule:", error.message);
+    return res.status(500).json({ error: "Server error: " + error.message });
+  }
+};
+
+
+module.exports = { createRules, evaluateRule, getRule, getOneRule , updaterule};

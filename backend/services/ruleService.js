@@ -60,7 +60,7 @@ function checkSyntax(ruleString) {
     }
     
     // Check for missing logical operators (AND/OR)
-    if (!/AND|OR/.test(ruleString) && !ruleString.includes(">") && !ruleString.includes("=")) {
+    if (!/AND|OR/.test(ruleString) && !ruleString.includes(">") && !ruleString.includes("<") && !ruleString.includes("=")) {
       throw new Error('Syntax Error: Rule must contain logical operators (AND/OR) or comparison operators.');
     }
 
