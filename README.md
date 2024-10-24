@@ -13,8 +13,6 @@ This project is a rule engine that allows users to create, modify, and evaluate 
 - **Create Rules**  
   Users can write rules using conditions such as:
   - `age > 30 AND department = 'Sales'`
-  - `(age < 25 AND salary > 50000)`  
-  The rules are parsed and converted into an **AST** for efficient evaluation.
 
 - **Combine Multiple Rules**  
   Users can combine multiple rules into one using logical operators like **AND** and **OR**.  
@@ -22,10 +20,9 @@ This project is a rule engine that allows users to create, modify, and evaluate 
   - `((age > 30 AND department = 'Sales') OR (age < 25)) AND (salary > 50000)`
 
 - **Evaluate Rules**  
-  Once the rules are created, users can provide data to evaluate them.  
+  Once the rules are created, users can provide data to evaluate them. The engine will return `True` or `False` based on the rule evaluation.
   Example:  
   - **Input Data**: `{ age: 35, department: 'Sales', salary: 60000 }`  
-  The engine will return `True` or `False` based on the rule evaluation.
 
 - **Update Rules**  
   Modify any part of an existing rule (conditions, operators) and the AST will automatically update.
@@ -44,23 +41,22 @@ To run this project locally, follow these steps:
    cd Rule-Engine-with-AST
    ```
 
-2. **Install dependencies:**
+2. **Install dependencies inside both frontend and backend folders**
    ```sh
+   cd frontend
+   npm install
+   cd ..
+   cd backend
    npm install
    ```
-3. **create .env.development files**
-   
-   ```sh
-   VITE_API_URL=http://localhost:8000  # paste this inside .env.development file
-   ```
 
-5. **Run the development server in both frontend and backend folder**
+3. **Run the development server in both frontend and backend folder**
    ```sh
    npm run dev # in both frontend and backend folders
    ```
 6. **Open your browser and visit:**
    ```
-   http://localhost:5173
+   http://localhost:5173  
    ```
 
 
