@@ -4,7 +4,6 @@ import axios from "axios";
 import { showToast } from "../utils/toast";
 import { API_URL } from "../../constants/constants.js";
 
-
 const CreateRule = ({ fetchRules }) => {
   const [ruleName, setRuleName] = useState("");
   const [ruleString, setRuleString] = useState("");
@@ -17,20 +16,16 @@ const CreateRule = ({ fetchRules }) => {
       return;
     }
     try {
-      // Show loading notification
       showToast("Creating the rule", "loading");
       let resp = await axios.post(`${API_URL}/api/rules/create`, {
         ruleName,
         ruleString,
       });
   
-      // On success
-      console.log(resp);
       showToast("", "dismiss");
       showToast("Saved Rule to database", "success");
       
       fetchRules();
-
     } catch (error) {
       showToast("", "dismiss");
       let errorMessage = error.response?.data?.error || error.message;
@@ -42,9 +37,9 @@ const CreateRule = ({ fetchRules }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gradient-to-b from-zinc-800 to-zinc-900 mt-5 h-80 rounded-xl px-4 flex flex-col justify-evenly shadow-lg border-2 border-sky-800"
+      className="bg-gradient-to-b from-zinc-800 to-zinc-900 mt-5 h-auto sm:h-80 rounded-xl px-4 py-6 sm:py-0 flex flex-col justify-evenly shadow-lg border-2 border-sky-800"
     >
-      <h1 className="text-white text-xl font-bold">Create Rule</h1>
+      <h1 className="text-white text-lg sm:text-xl font-bold">Create Rule</h1>
 
       <div className="w-full p-1">
         <input
@@ -65,10 +60,10 @@ const CreateRule = ({ fetchRules }) => {
         />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-center sm:justify-end">
         <button
           type="submit"
-          className="w-1/3 p-2 text-xl font-bold rounded-lg bg-gradient-to-r from-sky-500 to-purple-900 text-white hover:from-blue-400 hover:to-purple-500 transition duration-300 ease-in-out"
+          className="w-full sm:w-1/3 p-2 text-lg sm:text-xl font-bold rounded-lg bg-gradient-to-r from-sky-500 to-purple-900 text-white hover:from-blue-400 hover:to-purple-500 transition duration-300 ease-in-out"
         >
           Create Rule
         </button>
