@@ -1,6 +1,6 @@
 # Rule Engine with AST
 
-This project is a rule engine that allows users to create, modify, and evaluate rules based on conditions like age, department, salary, etc. The engine uses an Abstract Syntax Tree (AST) to represent rules, providing dynamic rule creation, combination, and evaluation.
+This project is a rule engine that allows users to create, modify, and evaluate rules based on conditions like age, department, salary, etc. The engine uses an Abstract Syntax Tree (AST) to represent rules, combine them and evaluation.
 
 
 ## Technology Stack
