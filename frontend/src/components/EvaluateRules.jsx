@@ -1,9 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
-// import { API_URL } from "../../constants/constants";
+import { API_URL } from "../../constants/constants";
 import { showToast } from "../utils/toast";
 
-const API_URL = "http://localhost:8000";
 
 const EvaluateRules = ({ rules }) => {
   const [selectedRuleName, setSelectedRuleName] = useState("");
