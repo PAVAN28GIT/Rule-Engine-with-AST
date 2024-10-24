@@ -19,10 +19,15 @@ const EvaluateRules = ({ rules }) => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
 
-    if (selectedRuleName === "") {
+    if (selectedRuleName === "" ) {
       showToast("Please select a rule", "error");
       return;
     }
+    if (userdata === "" ) {
+      showToast("Please Enter Json data to evaluate", "error");
+      return;
+    }
+ 
 
     try {
       showToast("Evaluating the rule", "loading");
