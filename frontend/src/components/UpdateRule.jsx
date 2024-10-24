@@ -57,8 +57,7 @@ export const UpdateRule = ({rules,fetchRules}) => {
   
       // Fetch updated rules and reset form fields
       fetchRules();
-      setSelectedRuleName("");  // Reset the selected rule name
-      setRuleString("");  // Reset the rule string
+    
   
     } catch (error) {
       showToast("", "dismiss");

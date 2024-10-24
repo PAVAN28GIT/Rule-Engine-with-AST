@@ -43,8 +43,7 @@ const CombineRule = ({ rules, fetchRules }) => {
       showToast("Saved Rule to database", "success");
   
       fetchRules();
-      setRuleName("");
-      setCombineString("");
+
     } catch (error) {
       showToast("", "dismiss");
       let errorMessage = error.response?.data?.error || error.message;

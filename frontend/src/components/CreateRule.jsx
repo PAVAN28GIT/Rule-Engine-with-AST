@@ -13,7 +13,7 @@ const CreateRule = ({ fetchRules }) => {
     e.preventDefault();
   
     if (!ruleName || !ruleString) {
-      showToast("Please fill in both fields.", "error");
+      showToast("Please fill in both fields to Create Rule.", "error");
       return;
     }
     try {
@@ -30,9 +30,7 @@ const CreateRule = ({ fetchRules }) => {
       showToast("Saved Rule to database", "success");
       
       fetchRules();
-      setRuleName("");
-      setRuleString("");
-  
+
     } catch (error) {
       showToast("", "dismiss");
       let errorMessage = error.response?.data?.error || error.message;

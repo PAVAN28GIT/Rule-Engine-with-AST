@@ -42,8 +42,7 @@ const EvaluateRules = ({ rules }) => {
         ? showToast("Evaluate Success", "success")
         : showToast("Evaluation Failed", "error");
 
-      setSelectedRuleName(""); // Clear the selected rule
-      setUserData(""); // Clear the user data input
+      
     } catch (error) {
       showToast("", "dismiss");
       let errorMessage = error.response?.data?.error || error.message;
