@@ -31,18 +31,6 @@ This project is a rule engine that allows users to create, modify, and evaluate 
   Modify any part of an existing rule (conditions, operators) and the AST will automatically update.
   
 
-
-## ScreenShots
-<img width="1440" alt="Screenshot 2024-10-24 at 10 16 53 AM" src="https://github.com/user-attachments/assets/97e7bbb7-d954-48f0-8aa0-555e00161331">
-
-<img width="1440" alt="Screenshot 2024-10-24 at 10 16 54 AM 1" src="https://github.com/user-attachments/assets/2bdb92b5-2ddc-4e32-855f-c31268dbde21">
-<img width="1440" alt="Screenshot 2024-10-24 at 10 52 00 AM" src="https://github.com/user-attachments/assets/bff7d231-028f-4f6e-abcb-86edc70ea6a0">
-
-<img width="1440" alt="Screenshot 2024-10-24 at 10 52 01 AM 1" src="https://github.com/user-attachments/assets/9b3b51bc-61fc-4bdc-8227-bdccc880c9fb">
-
-
-
-
 ## Deployment
   - The application is deployed at: [https://rule-engine-with-ast-ten.vercel.app/](https://rule-engine-with-ast-ten.vercel.app/)
 
@@ -74,5 +62,15 @@ To run this project locally, follow these steps:
    ```
    http://localhost:5173
    ```
+
+
+## ScreenShots
+
+<img width="1440" alt="Screenshot 2024-10-24 at 2 40 24 PM" src="https://github.com/user-attachments/assets/60323912-c4f4-4878-a7ec-106d84647317">
+<img width="1440" alt="Screenshot 2024-10-24 at 2 40 24 PM 1" src="https://github.com/user-attachments/assets/59524c5b-8da5-4b97-847e-9a1dcc28b0f6">
+<img width="1440" alt="Screenshot 2024-10-24 at 2 38 28 PM 3" src="https://github.com/user-attachments/assets/02dd33c2-464c-4052-bb5e-4269f484f03a">
+<img width="1440" alt="Screenshot 2024-10-24 at 2 41 08 PM" src="https://github.com/user-attachments/assets/acffee2a-702a-4302-ab1c-1942971a9608">
+<img width="1440" alt="Screenshot 2024-10-24 at 2 41 14 PM" src="https://github.com/user-attachments/assets/0c88f9d8-315c-4654-982c-c652a629ec09">
+<img width="1440" alt="Screenshot 2024-10-24 at 2 43 00 PM" src="https://github.com/user-attachments/assets/9993063e-65e2-48a3-b1fd-2750a24281ad">
 
 
