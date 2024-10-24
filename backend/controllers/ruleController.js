@@ -60,5 +60,29 @@ const getRule = async(req, res)=>{
   }
 }
 
+// const getOneRule = async(req, res)=>{
+//   try{
+//     let {ruleName} = req.body;
+//     const rules = await Rule.findOne({ruleName});
 
-module.exports = { createRules, evaluateRule, getRule};
+//     if (!rules) return res.status(400).json({ message: "Rule not found" });
+//     res.status(200).json(rules);
+//   }catch(error){
+//     res.status(500).json({ message: "Error retrieving rules", error });
+//   }
+// }
+
+const getOneRule = async (req, res) => {
+  try {
+    let { ruleName } = req.query; // change from req.body to req.query
+    const rules = await Rule.findOne({ ruleName });
+
+    if (!rules) return res.status(400).json({ message: "Rule not found" });
+    res.status(200).json(rules);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving rules", error });
+  }
+};
+
+
+module.exports = { createRules, evaluateRule, getRule, getOneRule};

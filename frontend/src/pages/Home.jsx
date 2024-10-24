@@ -25,7 +25,7 @@ const Home = () => {
     <div className="bg-zinc-950 flex w-full gap-4 p-10 h-full relative overflow-y-auto font-nunito">
       <div className="w-3/5 h-full">
         <CreateRule fetchRules={fetchRules} />
-        <CombineRule rules={rules} />
+        <CombineRule rules={rules} fetchRules={fetchRules} />
         <UpdateRule />
       </div>
 

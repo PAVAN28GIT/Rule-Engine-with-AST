@@ -5,7 +5,7 @@ This project is a rule engine that allows users to create, modify, and evaluate 
 
 ## Technology Stack
 
-- **Frontend**: React, Tailwind CSS
+- **Frontend**: React + vite, Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 
@@ -36,6 +36,10 @@ This project is a rule engine that allows users to create, modify, and evaluate 
 <img width="1440" alt="Screenshot 2024-10-24 at 10 16 53 AM" src="https://github.com/user-attachments/assets/97e7bbb7-d954-48f0-8aa0-555e00161331">
 
 <img width="1440" alt="Screenshot 2024-10-24 at 10 16 54 AM 1" src="https://github.com/user-attachments/assets/2bdb92b5-2ddc-4e32-855f-c31268dbde21">
+<img width="1440" alt="Screenshot 2024-10-24 at 10 52 00 AM" src="https://github.com/user-attachments/assets/bff7d231-028f-4f6e-abcb-86edc70ea6a0">
+
+<img width="1440" alt="Screenshot 2024-10-24 at 10 52 01 AM 1" src="https://github.com/user-attachments/assets/9b3b51bc-61fc-4bdc-8227-bdccc880c9fb">
+
 
 
 
