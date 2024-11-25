@@ -1,29 +1,32 @@
 const Rule = require("../models/Rule");
-const { checkSyntax, parseRule , evaluateAST } = require("../services/ruleService");
+const { Parser } = require('expr-eval'); 
+
+const parser = new Parser(); // Initialize parser
 
 
-// API logic  to accept rule string and generate AST
 const createRules = async (req, res) => {
   try {
     console.log("Received in backend", req.body);
 
     const { ruleName, ruleString } = req.body;
 
-    const syntaxCheck = checkSyntax(ruleString);
-    if (!syntaxCheck.valid) {
-      console.log("Syntax error detected:", syntaxCheck.error);
-      return res.status(400).json({ error: syntaxCheck.error });
-    }
-    const ast = parseRule(ruleString); 
-    if (ast === null) {
-      return res.status(400).json({ error: "AST was not created. Check your syntax." });
+    const cleanedRuleString = `"${ruleString.trim()}"`;
+    console.log("Cleaned rule string:", cleanedRuleString);
+
+
+    let ast;
+    try {
+      ast = parser.parse(cleanedRuleString);  // Parse rule into an AST
+    } catch (parseError) {
+      console.error("Syntax error detected:", parseError.message);
+      return res.status(400).json({ error: "Invalid syntax: " + parseError.message });
     }
 
     console.log("Saving rule to the database");
     const newRule = new Rule({ ruleName, ruleString, ast });
     await newRule.save();
     
-    console.log("Rule saved to database", ast);
+    console.log("Rule saved to database");
     res.status(201).json(newRule);
 
   } catch (error) {
@@ -33,16 +36,19 @@ const createRules = async (req, res) => {
   }
 };
 
-
 // API logic to evaluate the AST with user input
 const evaluateRule = async (req, res) => {
   try {
     const { ruleName, userData } = req.body;
+    console.log("Received in backend", userData);
     const rule = await Rule.findOne({ ruleName });
 
     if (!rule) return res.status(400).json({ message: "Rule not found" });
 
-    const result = evaluateAST(rule.ast, userData);
+    const ast = parser.parse(rule.ruleString); // Re-parse the rule string
+    const result = ast.evaluate(userData);  
+
+ 
     res.status(200).json({ match: result });
   } catch (error) {
     res.status(500).json({ message: "Error evaluating rule", error });
@@ -52,14 +58,12 @@ const evaluateRule = async (req, res) => {
 
 const getRule = async(req, res)=>{
   try{
-
     const rules = await Rule.find();
     res.status(200).json(rules);
   }catch(error){
     res.status(500).json({ message: "Error retrieving rules", error });
   }
 }
-
 
 const getOneRule = async (req, res) => {
   try {
@@ -83,23 +87,19 @@ const updaterule = async (req, res) => {
       return res.status(404).json({ error: "Rule not found." });
     }
 
-    // Check syntax of the new rule string
-    const syntaxCheck = checkSyntax(ruleString);
-    if (!syntaxCheck.valid) {
-      console.log("Syntax error detected:", syntaxCheck.error);
-      return res.status(400).json({ error: syntaxCheck.error });
-    }
-
-    // Parse the new rule string into AST
-    const ast = parseRule(ruleString);
-    if (ast === null) {
-      return res.status(400).json({ error: "AST was not created. Check your syntax." });
+    let ast;
+    try {
+      ast = parser.parse(ruleString);  // Parse rule into an AST
+    } catch (parseError) {
+      console.log("Syntax error detected:", parseError.message);
+      return res.status(400).json({ error: "Invalid syntax: " + parseError.message });
     }
 
     // Update the rule in the database
     existingRule.ruleString = ruleString;
     existingRule.ast = ast;
     await existingRule.save();
+
 
     console.log("Rule updated in database", existingRule);
     res.status(200).json(existingRule);

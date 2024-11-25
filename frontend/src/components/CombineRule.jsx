@@ -23,8 +23,16 @@ const CombineRule = ({ rules, fetchRules }) => {
     }
 
     try {
+      
       let old_string = await axios.get(`${API_URL}/api/rules/getone?ruleName=${selectedRuleName}`);
-      let new_string = String(old_string.data.ruleString) + " " + String(operator) + " " + String(combineString);
+      //let new_string = String(old_string.data.ruleString) + " " + String(operator) + " " + String(combineString);
+
+      // Remove surrounding quotes from the old rule string and combine string
+      let cleaned_old_string = old_string.data.ruleString.replace(/^"|"$/g, '');
+      let cleaned_combineString = combineString.replace(/^"|"$/g, '');
+
+      // Combine the cleaned strings with the operator
+      let new_string = cleaned_old_string + " " + String(operator) + " " + cleaned_combineString;
 
       showToast("Creating the rule", "loading");
 
