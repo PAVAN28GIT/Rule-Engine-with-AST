@@ -69,6 +69,7 @@ function evaluate(node, data) {
     }
   } else if (node.type === 'operand') {
     let { key, operator, value } = node;
+    
     if (typeof value === 'string'){
       if (value[0] === "'" && value[value.length - 1] === "'") {
         value = value.slice(1, value.length - 1);
