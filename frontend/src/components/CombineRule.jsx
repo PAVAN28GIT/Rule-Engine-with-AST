@@ -23,16 +23,19 @@ const CombineRule = ({ rules, fetchRules }) => {
     }
 
     try {
-      
-      let old_string = await axios.get(`${API_URL}/api/rules/getone?ruleName=${selectedRuleName}`);
-      //let new_string = String(old_string.data.ruleString) + " " + String(operator) + " " + String(combineString);
+      let old_string = await axios.get(
+        `${API_URL}/api/rules/getone?ruleName=${selectedRuleName}`
+      );
 
-      // Remove surrounding quotes from the old rule string and combine string
-      let cleaned_old_string = old_string.data.ruleString.replace(/^"|"$/g, '');
-      let cleaned_combineString = combineString.replace(/^"|"$/g, '');
+      let existingRule = String(old_string.data.ruleString).trim();
 
-      // Combine the cleaned strings with the operator
-      let new_string = cleaned_old_string + " " + String(operator) + " " + cleaned_combineString;
+      let sanitizedCombineString = String(combineString).trim();
+      let sanitizedOperator = String(operator).trim();
+
+      // Combine them into a new string with proper spacing
+      let new_string = `${existingRule} ${sanitizedOperator} ${sanitizedCombineString}`;
+      console.log("Sending combined rule:", new_string);
+
 
       showToast("Creating the rule", "loading");
 
@@ -45,7 +48,6 @@ const CombineRule = ({ rules, fetchRules }) => {
       showToast("Saved Rule to database", "success");
 
       fetchRules();
-
     } catch (error) {
       showToast("", "dismiss");
       let errorMessage = error.response?.data?.error || error.message;
@@ -58,7 +60,9 @@ const CombineRule = ({ rules, fetchRules }) => {
       onSubmit={handleSubmit}
       className="bg-gradient-to-b from-zinc-800 to-zinc-900 mt-5 h-auto sm:h-80 rounded-xl px-4 py-6 sm:py-0 flex flex-col justify-evenly shadow-lg border-2 border-sky-800"
     >
-      <h1 className="text-white text-lg md:pt-2 sm:text-xl font-bold">Combine Rules</h1>
+      <h1 className="text-white text-lg md:pt-2 sm:text-xl font-bold">
+        Combine Rules
+      </h1>
 
       <div className="w-full p-1">
         <input
@@ -113,5 +117,3 @@ const CombineRule = ({ rules, fetchRules }) => {
 };
 
 export default CombineRule;
-
-

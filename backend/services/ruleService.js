@@ -1,97 +1,104 @@
-// Core business logic (AST parsing and evaluation)
+function parseRuleString(ruleString) {
+  const tokens = ruleString.match(/(\(|\)|AND|OR|<=|>=|!=|<|>|=|[^()\s]+)/g);
+  const stack = [];
+  const operators = [];
 
-function parseRule(ruleString) {
-  // Base case
-  if (ruleString.includes(">")) {
-    const [field, value] = ruleString.split(" > ");
-    return {
-      type: "operand",
-      field: field.trim(),
-      operator: ">",
-      value: parseInt(value.trim()),
-    };
-  }
-  if (ruleString.includes("=")) {
-    const [field, value] = ruleString.split(" = ");
-    return {
-      type: "operand",
-      field: field.trim(),
-      operator: "=",
-      value: value.trim().replace(/'/g, ""),
-    };
+  function popOperator() {
+      const operator = operators.pop();
+      const right = stack.pop();
+      const left = stack.pop();
+      
+      // console.log("****"+operator+left+right+"****");
+      stack.push({ type: 'operator', operator, left, right });
   }
 
-  // Recursive case: handle AND/OR
-  if (ruleString.includes("AND")) {
-    const [left, right] = ruleString.split(" AND ");
-    return {
-      type: "operator",
-      operator: "AND",
-      left: parseRule(left),
-      right: parseRule(right),
-    };
-  }
-  if (ruleString.includes("OR")) {
-    const [left, right] = ruleString.split(" OR ");
-    return {
-      type: "operator",
-      operator: "OR",
-      left: parseRule(left),
-      right: parseRule(right),
-    };
+  for (let i = 0; i < tokens.length; i++) {
+      // console.log(tokens[i]);
+      const token = tokens[i].trim();
+      if (token === ' ') continue; // Skip empty tokens (spaces)
+
+      if (token === 'AND' || token === 'OR') {
+          while (operators.length && operators[operators.length - 1] !== '(') {
+              popOperator();
+          }
+          operators.push(token);
+      } else if (token === '(') {
+          operators.push(token);
+      } else if (token === ')') {
+          while (operators.length && operators[operators.length - 1] !== '(') {
+              popOperator();
+          }
+          operators.pop();
+      } else {
+          // const [key, operator, value] = token.split(/(<=|>=|<|>|=|!=|)/).map(s => s.trim());
+          let key=null,operator=null,value=null;
+          while(i<tokens.length && (key==null||operator==null||value==null) ){
+            if(key===null) key=tokens[i];
+            else if(operator==null) operator=tokens[i];
+            else value=tokens[i];
+            i++;
+          }
+          i--;
+          // console.log("---"+key+operator+value+"---");
+          stack.push({ type: 'operand', key, operator, value });
+      }
   }
 
-  return null; // For cases where there's no valid parsing
+  while (operators.length) {
+      popOperator();
+  }
+
+  return stack[0];
 }
 
-function checkSyntax(ruleString) {
-  try {
-    // Check if the rule string is empty
-    if (!ruleString || typeof ruleString !== 'string') {
-      throw new Error('Invalid rule string: Rule cannot be empty and must be a string');
-    }
-    
-    // Check for mismatched parentheses
-    const openBrackets = (ruleString.match(/\(/g) || []).length;
-    const closeBrackets = (ruleString.match(/\)/g) || []).length;
-    
-    if (openBrackets !== closeBrackets) {
-      throw new Error('Syntax Error: Mismatched parentheses');
-    }
-    
-    // Check for missing logical operators (AND/OR)
-    if (!/AND|OR/.test(ruleString) && !ruleString.includes(">") && !ruleString.includes("<") && !ruleString.includes("=")) {
-      throw new Error('Syntax Error: Rule must contain logical operators (AND/OR) or comparison operators.');
-    }
-
-    return { valid: true };  // If everything is valid
-  
-  } catch (error) {
-    return { valid: false, error: error.message };
-  }
+function printTree(node,prefix = '', isLeft = true) {
+  if (!node) return;
+  console.log(prefix + (isLeft ? "├── " : "└── ") + (node.type === 'operator' ? node.operator : `${node.key} ${node.operator} ${node.value}`));
+  if (node.left) printTree(node.left, prefix + (isLeft ? "│   " : "    "), true);
+  if (node.right) printTree(node.right, prefix + (isLeft ? "│   " : "    "), false);
 }
 
-// Evaluate AST against user input
-function evaluateAST(ast, userData) {
-  if (ast.type === "operand") {
-    const field = userData[ast.field];
-    switch (ast.operator) {
-      case ">":
-        return field > ast.value;
-      case "<":
-        return field < ast.value;
-      case "=":
-        return field === ast.value;
+function evaluate(node, data) {
+  if (node.type === 'operator') {
+    const left = evaluate(node.left, data);
+    const right = evaluate(node.right, data);
+    if (node.operator === 'AND') {
+      return left && right;
+    } else if (node.operator === 'OR') {
+      return left || right;
+    }
+  } else if (node.type === 'operand') {
+    let { key, operator, value } = node;
+    if (typeof value === 'string'){
+      if (value[0] === "'" && value[value.length - 1] === "'") {
+        value = value.slice(1, value.length - 1);
+      }
+    }
+  // console.log(value, data[key]);
+    switch (operator) {
+      case '>':
+        return data[key] > value;
+      case '<':
+        return data[key] < value;
+      case '>=':
+        return data[key] >= value;
+      case '<=':
+        return data[key] <= value;
+      case '==':
+        return data[key] == value;
+      case '!=':
+        return data[key] != value;
+      case '=': // assuming '=' is the same as '=='
+        return data[key] == value;
       default:
-        throw new Error("Unknown operator");
+        return false;
     }
-  } else if (ast.type === "operator") {
-    const leftResult = evaluateAST(ast.left, userData);
-    const rightResult = evaluateAST(ast.right, userData);
-
-    if (ast.operator === "AND") return leftResult && rightResult;
-    if (ast.operator === "OR") return leftResult || rightResult;
   }
+  return false;
 }
 
-module.exports = { checkSyntax, parseRule, evaluateAST};
+module.exports = {
+  parseRuleString,
+  printTree,
+  evaluate
+};

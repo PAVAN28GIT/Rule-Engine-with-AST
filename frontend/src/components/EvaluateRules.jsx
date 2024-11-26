@@ -47,9 +47,8 @@ const EvaluateRules = ({ rules }) => {
 
     } catch (error) {
       showToast("", "dismiss");
-      let errorMessage = error.response?.data?.error || error.message;
-      showToast(errorMessage, "error");
-      console.log("Error evaluating rule:", errorMessage);
+      showToast(error.message, "error");
+      console.log("Error evaluating rule:", error.message);
     }
   };
 

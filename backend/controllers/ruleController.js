@@ -1,7 +1,5 @@
 const Rule = require("../models/Rule");
-const { Parser } = require('expr-eval'); 
-
-const parser = new Parser(); // Initialize parser
+const { parseRuleString, printTree, evaluate } = require('../services/ruleService');
 
 
 const createRules = async (req, res) => {
@@ -10,16 +8,11 @@ const createRules = async (req, res) => {
 
     const { ruleName, ruleString } = req.body;
 
-    const cleanedRuleString = `"${ruleString.trim()}"`;
-    console.log("Cleaned rule string:", cleanedRuleString);
-
-
-    let ast;
-    try {
-      ast = parser.parse(cleanedRuleString);  // Parse rule into an AST
-    } catch (parseError) {
-      console.error("Syntax error detected:", parseError.message);
-      return res.status(400).json({ error: "Invalid syntax: " + parseError.message });
+    // Parse the rule string into an AST
+    const ast = parseRuleString(ruleString);
+    
+    if(!ast){
+      return res.status(400).json({ error: "Invalid syntax" });
     }
 
     console.log("Saving rule to the database");
@@ -45,16 +38,13 @@ const evaluateRule = async (req, res) => {
 
     if (!rule) return res.status(400).json({ message: "Rule not found" });
 
-    const ast = parser.parse(rule.ruleString); // Re-parse the rule string
-    const result = ast.evaluate(userData);  
-
+    const result = evaluate(rule.ast, userData);
  
     res.status(200).json({ match: result });
   } catch (error) {
     res.status(500).json({ message: "Error evaluating rule", error });
   }
 };
-
 
 const getRule = async(req, res)=>{
   try{
@@ -87,19 +77,14 @@ const updaterule = async (req, res) => {
       return res.status(404).json({ error: "Rule not found." });
     }
 
-    let ast;
-    try {
-      ast = parser.parse(ruleString);  // Parse rule into an AST
-    } catch (parseError) {
-      console.log("Syntax error detected:", parseError.message);
-      return res.status(400).json({ error: "Invalid syntax: " + parseError.message });
+    const newast = parseRuleString(ruleString);
+    if (!newast) {
+      return res.status(400).json({ error: "Invalid syntax" });
     }
-
     // Update the rule in the database
     existingRule.ruleString = ruleString;
-    existingRule.ast = ast;
+    existingRule.ast = newast;
     await existingRule.save();
-
 
     console.log("Rule updated in database", existingRule);
     res.status(200).json(existingRule);
